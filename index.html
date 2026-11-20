@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¿Puedo jubilarme?</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+        color: #27324a;
+        background: #fff8f1;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 32px 18px;
+        background:
+          radial-gradient(ellipse at 12% 18%, #ffe1c8 0, transparent 27%),
+          radial-gradient(ellipse at 88% 82%, #d9e8ff 0, transparent 30%),
+          #fff8f1;
+      }
+
+      main {
+        width: min(100%, 500px);
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: #e27555;
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .card {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(26px, 7vw, 46px);
+        border: 1px solid #f4e9df;
+        border-radius: 30px;
+        background: rgb(255 255 255 / 94%);
+        box-shadow: 0 24px 70px rgb(87 63 48 / 12%);
+      }
+
+      .card::before {
+        position: absolute;
+        top: -60px;
+        right: -52px;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: #fff0dc;
+        content: "";
+      }
+
+      .icon {
+        position: relative;
+        display: grid;
+        width: 66px;
+        height: 66px;
+        margin: 0 auto 18px;
+        place-items: center;
+        border-radius: 22px;
+        background: #fff0dc;
+        font-size: 2rem;
+        transform: rotate(-6deg);
+      }
+
+      h1 {
+        margin: 0;
+        color: #29344c;
+        font-size: clamp(2rem, 8vw, 2.8rem);
+        letter-spacing: -0.06em;
+        text-align: center;
+      }
+
+      .intro {
+        margin: 12px 0 30px;
+        color: #7b8292;
+        line-height: 1.6;
+        text-align: center;
+      }
+
+      form {
+        display: grid;
+        gap: 18px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      label {
+        color: #414b61;
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+
+      select,
+      input {
+        width: 100%;
+        min-height: 54px;
+        padding: 0 16px;
+        border: 1px solid #e8e7e8;
+        border-radius: 14px;
+        outline: none;
+        background: #fffdfb;
+        color: #29344c;
+        font: inherit;
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+      }
+
+      select:focus,
+      input:focus {
+        border-color: #e98a68;
+        box-shadow: 0 0 0 4px rgb(233 138 104 / 16%);
+      }
+
+      .hint {
+        margin: 0;
+        color: #9298a5;
+        font-size: 0.82rem;
+      }
+
+      button {
+        min-height: 56px;
+        margin-top: 4px;
+        border: 0;
+        border-radius: 16px;
+        background: linear-gradient(110deg, #ed8969, #e46c71);
+        box-shadow: 0 10px 20px rgb(228 108 113 / 22%);
+        color: white;
+        cursor: pointer;
+        font: inherit;
+        font-size: 1rem;
+        font-weight: 800;
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      button:hover {
+        box-shadow: 0 13px 24px rgb(228 108 113 / 30%);
+        transform: translateY(-2px);
+      }
+
+      button:focus-visible {
+        outline: 3px solid #29344c;
+        outline-offset: 3px;
+      }
+
+      #result {
+        min-height: 26px;
+        margin: 22px 0 0;
+        color: #596277;
+        font-weight: 700;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .note {
+        margin: 18px 0 0;
+        color: #9a9eaa;
+        font-size: 0.78rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">Una consulta para tu futuro</p>
+      <section class="card" aria-labelledby="page-title">
+        <div class="icon" aria-hidden="true">🌅</div>
+        <h1 id="page-title">¿Puedo jubilarme?</h1>
+        <p class="intro">Completá tus datos y descubrí si ya llegó el momento de disfrutar esta nueva etapa.</p>
+        <form id="retirement-form">
+          <div class="field">
+            <label for="gender">¿Cuál es tu género?</label>
+            <select id="gender" required>
+              <option value="mujer">Mujer</option>
+              <option value="hombre">Hombre</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="age">¿Cuántos años tenés?</label>
+            <input id="age" type="number" min="0" placeholder="Por ejemplo, 60" required />
+            <p class="hint">La edad mínima es de 60 años para mujeres y 65 para hombres.</p>
+          </div>
+
+          <button type="submit">Consultar mi edad ✨</button>
+        </form>
+        <p id="result" aria-live="polite"></p>
+        <p class="note">Información según la edad jubilatoria en Argentina.</p>
+      </section>
+    </main>
+
+    <script>
+      const form = document.querySelector("#retirement-form");
+      const result = document.querySelector("#result");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const gender = document.querySelector("#gender").value;
+        const age = Number(document.querySelector("#age").value);
+
+        if ((gender === "mujer" && age >= 60) || (gender === "hombre" && age >= 65)) {
+          result.textContent = "Estás en edad de jubilarte.";
+        } else {
+          result.textContent = "Todavía no estás en edad de jubilarte.";
+        }
+      });
+    </script>
+  </body>
+</html>
